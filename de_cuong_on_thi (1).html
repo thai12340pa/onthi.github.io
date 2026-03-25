@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đề Cương Ôn Thi – Quản Trị Mạng CNTT</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--surface2:#1c2330;--border:#30363d;--text:#e6edf3;--text-muted:#8b949e;--accent:#58a6ff;--accent2:#3fb950;--accent3:#ff7b72;--accent4:#d2a8ff;--accent5:#ffa657;--warn:#f0883e;--tip:#3fb950;--linux:#238636;--linux-bg:#0d2818;--windows:#1f6feb;--windows-bg:#0d1f3c;--offline:#9e6a03;--offline-bg:#271d04;--sidebar-w:272px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;line-height:1.7;display:flex;min-height:100vh}
+#sidebar{width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+#sidebar::-webkit-scrollbar{width:4px}#sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.sidebar-logo{padding:18px 16px 12px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:1}
+.sidebar-logo h2{font-size:13px;font-weight:800;color:var(--accent);letter-spacing:.5px;line-height:1.3}
+.sidebar-logo p{font-size:11px;color:var(--text-muted);margin-top:2px}
+.search-wrap{padding:10px 12px;border-bottom:1px solid var(--border)}
+.search-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-size:12.5px;font-family:inherit;outline:none}
+.search-input:focus{border-color:var(--accent)}.search-input::placeholder{color:#484f58}
+.nav-section{padding:8px 0 2px}
+.nav-section-label{font-size:10px;font-weight:700;letter-spacing:1.2px;color:var(--text-muted);padding:0 16px 3px;text-transform:uppercase}
+.nav-link{display:flex;align-items:center;gap:7px;padding:5px 16px;font-size:12.5px;color:var(--text-muted);text-decoration:none;cursor:pointer;border-left:2px solid transparent;transition:all .15s}
+.nav-link:hover{color:var(--text);background:var(--surface2)}
+.nav-link.active{color:var(--accent);border-left-color:var(--accent);background:rgba(88,166,255,.06)}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.dot-orange{background:var(--warn)}.dot-green{background:var(--linux)}.dot-blue{background:var(--windows)}.dot-purple{background:var(--accent4)}
+.nav-sub{padding-left:38px;font-size:12px}
+#main{margin-left:var(--sidebar-w);flex:1;max-width:calc(100% - var(--sidebar-w));padding:36px 44px}
+.hero{background:linear-gradient(135deg,#0d1f3c 0%,#0d2818 50%,#1a0d2e 100%);border:1px solid var(--border);border-radius:12px;padding:32px 36px;margin-bottom:28px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(88,166,255,.12) 0%,transparent 70%);pointer-events:none}
+.hero h1{font-size:26px;font-weight:800;background:linear-gradient(90deg,#58a6ff,#3fb950,#d2a8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;margin-bottom:6px}
+.hero p{color:var(--text-muted);font-size:13px;margin-bottom:16px}
+.hero-tags{display:flex;flex-wrap:wrap;gap:7px}
+.tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:600;border:1px solid}
+.tag-blue{color:var(--accent);border-color:rgba(88,166,255,.3);background:rgba(88,166,255,.08)}
+.tag-green{color:var(--accent2);border-color:rgba(63,185,80,.3);background:rgba(63,185,80,.08)}
+.tag-orange{color:var(--warn);border-color:rgba(240,136,62,.3);background:rgba(240,136,62,.08)}
+.tag-purple{color:var(--accent4);border-color:rgba(210,168,255,.3);background:rgba(210,168,255,.08)}
+.overview-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+.ov-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+.ov-num{font-size:26px;font-weight:800;line-height:1;margin-bottom:3px}
+.ov-label{font-size:11px;color:var(--text-muted)}
+.ov-blue .ov-num{color:var(--accent)}.ov-green .ov-num{color:var(--accent2)}.ov-orange .ov-num{color:var(--warn)}.ov-purple .ov-num{color:var(--accent4)}
+.weight-bars{margin:8px 0}
+.weight-row{margin-bottom:7px}
+.weight-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px}
+.weight-label span:first-child{color:var(--text)}.weight-label span:last-child{color:var(--accent);font-weight:700}
+.bar-track{height:5px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width 1.2s ease}
+.part-header{display:flex;align-items:center;gap:12px;margin:36px 0 16px;padding:12px 18px;border-radius:10px;border:1px solid}
+.part-header.offline{background:var(--offline-bg);border-color:rgba(158,106,3,.4)}
+.part-header.linux{background:var(--linux-bg);border-color:rgba(35,134,54,.4)}
+.part-header.windows{background:var(--windows-bg);border-color:rgba(31,111,235,.4)}
+.part-header.summary{background:linear-gradient(135deg,#1a0d2e,#0d1f3c);border-color:rgba(210,168,255,.4)}
+.part-icon{font-size:24px;line-height:1}
+.part-title{font-size:16px;font-weight:800}
+.part-header.offline .part-title{color:var(--warn)}.part-header.linux .part-title{color:var(--accent2)}.part-header.windows .part-title{color:var(--accent)}.part-header.summary .part-title{color:var(--accent4)}
+.part-sub{font-size:11.5px;color:var(--text-muted);margin-top:1px}
+.lab-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:14px;overflow:hidden;transition:border-color .2s}
+.lab-card:hover{border-color:#444c56}
+.lab-header{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;user-select:none;transition:background .15s}
+.lab-header:hover{background:var(--surface2)}
+.lab-num{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.lab-num.linux{background:rgba(35,134,54,.2);color:var(--accent2);border:1px solid rgba(35,134,54,.3)}
+.lab-num.windows{background:rgba(31,111,235,.2);color:var(--accent);border:1px solid rgba(31,111,235,.3)}
+.lab-title{font-size:13.5px;font-weight:700;flex:1}
+.lab-ip{font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono',monospace}
+.lab-chevron{color:var(--text-muted);font-size:11px;transition:transform .25s}
+.lab-card.open .lab-chevron{transform:rotate(90deg)}
+.lab-body{display:none;padding:0 16px 16px;border-top:1px solid var(--border)}
+.lab-card.open .lab-body{display:block}
+.alert{display:flex;gap:9px;padding:9px 12px;border-radius:7px;margin:9px 0;font-size:13px;border:1px solid}
+.alert-warn{background:rgba(240,136,62,.08);border-color:rgba(240,136,62,.3);color:var(--warn)}
+.alert-tip{background:rgba(63,185,80,.08);border-color:rgba(63,185,80,.3);color:var(--tip)}
+.alert-info{background:rgba(88,166,255,.08);border-color:rgba(88,166,255,.3);color:var(--accent)}
+.alert-icon{font-size:13px;flex-shrink:0;margin-top:2px}
+.code-wrap{background:#0d1117;border:1px solid var(--border);border-radius:8px;margin:9px 0;overflow:hidden}
+.code-header{display:flex;align-items:center;justify-content:space-between;padding:6px 12px;background:var(--surface2);border-bottom:1px solid var(--border)}
+.code-lang{font-size:10.5px;color:var(--text-muted);font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.copy-btn{background:none;border:1px solid var(--border);color:var(--text-muted);padding:2px 8px;border-radius:4px;font-size:11px;cursor:pointer;transition:all .15s;font-family:inherit}
+.copy-btn:hover{color:var(--text);border-color:#444c56;background:var(--surface)}
+.copy-btn.copied{color:var(--accent2);border-color:rgba(63,185,80,.4)}
+pre{padding:12px 14px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.65}
+pre::-webkit-scrollbar{height:3px}pre::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.c-comment{color:#6e7681}.c-cmd{color:#79c0ff}.c-str{color:#a5d6ff}.c-key{color:var(--accent2)}.c-val{color:var(--warn)}.c-hash{color:#6e7681}
+h3{font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.8px;margin:12px 0 5px}
+h3.green{color:var(--accent2)}h3.blue{color:var(--accent)}
+code{font-family:'JetBrains Mono',monospace;background:rgba(88,166,255,.1);color:var(--accent);padding:1px 5px;border-radius:4px;font-size:11.5px}
+.tbl-wrap{overflow-x:auto;margin:10px 0;border-radius:8px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+thead tr{background:var(--surface2)}
+th{padding:9px 12px;text-align:left;font-size:10.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border)}
+td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--text-muted)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--surface2)}
+td:first-child{font-weight:600;color:var(--text)}
+td code{font-size:11px}
+.checklist{list-style:none;margin:6px 0}
+.checklist li{display:flex;align-items:flex-start;gap:8px;padding:5px 0;font-size:13px;color:var(--text-muted);border-bottom:1px solid rgba(48,54,61,.5)}
+.checklist li:last-child{border-bottom:none}
+.checklist li::before{content:'□';color:var(--accent);font-size:14px;flex-shrink:0;line-height:1.4}
+.sub-text{font-size:12.5px;color:var(--text-muted);margin:5px 0}
+.mt-8{margin-top:8px}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+@media(max-width:900px){#sidebar{display:none}#main{margin-left:0;max-width:100%;padding:18px}.overview-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<nav id="sidebar">
+  <div class="sidebar-logo"><h2>Quản Trị Mạng CNTT</h2><p>Đề cương ôn thi thực hành</p></div>
+  <div class="search-wrap"><input class="search-input" type="text" placeholder="🔍 Tìm lab..." oninput="filterNav(this.value)"></div>
+  <div id="navContent">
+    <div class="nav-section">
+      <div class="nav-section-label">Tổng quan</div>
+      <a class="nav-link" onclick="goTo('hero')"><span class="dot dot-purple"></span>Thông tin đề thi</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">⚠️ Offline Setup</div>
+      <a class="nav-link" onclick="goTo('offline')"><span class="dot dot-orange"></span>Phần 0 – Cài offline</a>
+      <a class="nav-link nav-sub" onclick="goTo('off1')">Dùng ISO làm repo</a>
+      <a class="nav-link nav-sub" onclick="goTo('off2')">Local repo từ .deb</a>
+      <a class="nav-link nav-sub" onclick="goTo('off3')">Tải ALL packages</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">🐧 Linux – Debian</div>
+      <a class="nav-link" onclick="goTo('lab1')"><span class="dot dot-green"></span>Lab 1 – Routing &amp; Firewall</a>
+      <a class="nav-link" onclick="goTo('lab2')"><span class="dot dot-green"></span>Lab 2 – DHCP Server</a>
+      <a class="nav-link" onclick="goTo('lab3')"><span class="dot dot-green"></span>Lab 3 – Web Apache</a>
+      <a class="nav-link" onclick="goTo('lab4')"><span class="dot dot-green"></span>Lab 4 – FTP vsftpd</a>
+      <a class="nav-link" onclick="goTo('lab5')"><span class="dot dot-green"></span>Lab 5 – Mail Postfix</a>
+      <a class="nav-link" onclick="goTo('lab6')"><span class="dot dot-green"></span>Lab 6 – DNS Bind9</a>
+      <a class="nav-link" onclick="goTo('lab7')"><span class="dot dot-green"></span>Lab 7 – LDAP slapd</a>
+      <a class="nav-link" onclick="goTo('lab8')"><span class="dot dot-green"></span>Lab 8 – Samba</a>
+      <a class="nav-link" onclick="goTo('lab9')"><span class="dot dot-green"></span>Lab 9 – SSH</a>
+      <a class="nav-link" onclick="goTo('lab10')"><span class="dot dot-green"></span>Lab 10 – VPN OpenVPN</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">🪟 Windows Server</div>
+      <a class="nav-link" onclick="goTo('lab11')"><span class="dot dot-blue"></span>Lab 11 – AD DS</a>
+      <a class="nav-link" onclick="goTo('lab12')"><span class="dot dot-blue"></span>Lab 12 – DNS AD</a>
+      <a class="nav-link" onclick="goTo('lab13')"><span class="dot dot-blue"></span>Lab 13 – IIS Web</a>
+      <a class="nav-link" onclick="goTo('lab14')"><span class="dot dot-blue"></span>Lab 14 – Group Policy</a>
+      <a class="nav-link" onclick="goTo('lab15')"><span class="dot dot-blue"></span>Lab 15 – CA Cert</a>
+      <a class="nav-link" onclick="goTo('lab16')"><span class="dot dot-blue"></span>Lab 16 – RDS</a>
+      <a class="nav-link" onclick="goTo('lab17')"><span class="dot dot-blue"></span>Lab 17 – DHCP Windows</a>
+      <a class="nav-link" onclick="goTo('lab18')"><span class="dot dot-blue"></span>Lab 18 – File Services</a>
+      <a class="nav-link" onclick="goTo('lab19')"><span class="dot dot-blue"></span>Lab 19 – RRAS</a>
+      <a class="nav-link" onclick="goTo('lab20')"><span class="dot dot-blue"></span>Lab 20 – App Service</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">📊 Tóm tắt</div>
+      <a class="nav-link" onclick="goTo('ipmap')"><span class="dot dot-purple"></span>Bản đồ địa chỉ IP</a>
+      <a class="nav-link" onclick="goTo('cmds')"><span class="dot dot-purple"></span>Lệnh kiểm tra</a>
+      <a class="nav-link" onclick="goTo('chklist')"><span class="dot dot-purple"></span>Checklist nộp bài</a>
+      <a class="nav-link" onclick="goTo('errors')"><span class="dot dot-purple"></span>Lỗi thường gặp</a>
+    </div>
+  </div>
+</nav>
+<main id="main">
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero">
+      <h1>ĐỀ CƯƠNG ÔN THI THỰC HÀNH</h1>
+      <p>Nghề: Quản Trị Hệ Thống Mạng CNTT (IT Network Systems Administration)</p>
+      <div class="hero-tags">
+        <span class="tag tag-orange">⚠️ Offline – Không có Internet</span>
+        <span class="tag tag-green">🐧 Debian 12.13</span>
+        <span class="tag tag-blue">🪟 Windows Server 2022</span>
+        <span class="tag tag-purple">VMware 17 Pro</span>
+      </div>
+    </div>
+    <div class="overview-grid">
+      <div class="ov-card ov-orange"><div class="ov-num">60%</div><div class="ov-label">Cài đặt &amp; Cấu hình</div></div>
+      <div class="ov-card ov-blue"><div class="ov-num">20%</div><div class="ov-label">Xử lý sự cố</div></div>
+      <div class="ov-card ov-green"><div class="ov-num">20%</div><div class="ov-label">Tổ chức công việc</div></div>
+      <div class="ov-card ov-purple"><div class="ov-num">20</div><div class="ov-label">Labs thực hành</div></div>
+    </div>
+    <div class="weight-bars">
+      <div class="weight-row"><div class="weight-label"><span>Cài đặt, nâng cấp và cấu hình Hệ điều hành</span><span>60%</span></div><div class="bar-track"><div class="bar-fill" style="width:0%" data-w="60%" data-color="linear-gradient(90deg,#f0883e,#ffa657)"></div></div></div>
+      <div class="weight-row"><div class="weight-label"><span>Xử lý sự cố (Troubleshooting)</span><span>20%</span></div><div class="bar-track"><div class="bar-fill" style="width:0%" data-w="20%" data-color="linear-gradient(90deg,#1f6feb,#58a6ff)"></div></div></div>
+      <div class="weight-row"><div class="weight-label"><span>Tổ chức và quản lý công việc</span><span>20%</span></div><div class="bar-track"><div class="bar-fill" style="width:0%" data-w="20%" data-color="linear-gradient(90deg,#238636,#3fb950)"></div></div></div>
+    </div>
+  </section>
+
+  <!-- OFFLINE -->
+  <div class="part-header offline" id="offline"><span class="part-icon">⚠️</span><div><div class="part-title">PHẦN 0 – THIẾT LẬP OFFLINE (Bắt buộc đọc trước)</div><div class="part-sub">Không có bước này, mọi lệnh apt install sẽ thất bại trong phòng thi</div></div></div>
+
+  <div class="lab-card open" id="off1">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num linux">0.1</div><div style="flex:1"><div class="lab-title">Dùng ISO Debian làm nguồn apt (Nhanh nhất)</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="alert alert-warn"><span class="alert-icon">⚡</span>VMware: <strong>VM › Settings › CD/DVD › Use ISO Image</strong> trỏ vào file Debian 12.13 ISO</div>
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre><span class="c-comment"># Mount ISO vào VM</span>
+sudo mkdir -p /mnt/cdrom
+sudo mount /dev/cdrom /mnt/cdrom   <span class="c-comment"># hoặc /dev/sr0</span>
+
+<span class="c-comment"># Sửa sources.list – comment tất cả deb https:// và thêm:</span>
+sudo nano /etc/apt/sources.list
+<span class="c-str">deb file:///mnt/cdrom bookworm main contrib</span>
+
+sudo apt update</pre></div>
+    </div>
+  </div>
+
+  <div class="lab-card" id="off2">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num linux">0.2</div><div style="flex:1"><div class="lab-title">Local repo từ packages đã tải sẵn</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="alert alert-tip"><span class="alert-icon">✅</span>Tải trước khi còn internet, copy vào USB mang vào phòng thi</div>
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>sudo mkdir -p /opt/localrepo
+<span class="c-comment"># Copy .deb files vào /opt/localrepo</span>
+cd /opt/localrepo
+dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+echo <span class="c-str">"deb [trusted=yes] file:///opt/localrepo ./"</span> | sudo tee /etc/apt/sources.list.d/local.list
+sudo apt update</pre></div>
+    </div>
+  </div>
+
+  <div class="lab-card" id="off3">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num linux">0.3</div><div style="flex:1"><div class="lab-title">Tải ALL packages cần thiết (1 lệnh duy nhất)</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">bash – chạy khi CÒN internet</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>sudo apt install -y --download-only \
+  ufw isc-dhcp-server apache2 vsftpd \
+  postfix dovecot-imapd dovecot-pop3d \
+  bind9 bind9utils dnsutils \
+  slapd ldap-utils samba samba-common-bin \
+  openssh-server openvpn easy-rsa
+
+<span class="c-comment"># Packages nằm ở /var/cache/apt/archives/ – copy folder này</span>
+sudo cp -r /var/cache/apt/archives /opt/packages_backup</pre></div>
+    </div>
+  </div>
+
+  <!-- LINUX -->
+  <div class="part-header linux"><span class="part-icon">🐧</span><div><div class="part-title">PHẦN I – DỊCH VỤ LINUX (Debian 12.13)</div><div class="part-sub">Lab 1–10 | Card mạng mặc định: ens33 – thay theo thực tế</div></div></div>
+
+  <div class="lab-card open" id="lab1">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num linux">L1</div><div style="flex:1"><div class="lab-title">Lab 1 – Routing &amp; Firewall (UFW)</div><div class="lab-ip">10.0.0.1 | WAN: ens33 | LAN: ens34</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="alert alert-info"><span class="alert-icon">ℹ️</span>Nền tảng cho nhiều lab khác. UFW (Uncomplicated Firewall) đơn giản hơn iptables nhiều lần. Làm đúng lab này thì các lab sau sẽ nhanh hơn.</div>
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre><span class="c-comment"># 1. Bật IP Forwarding (cần cho NAT)</span>
+echo <span class="c-str">'net.ipv4.ip_forward=1'</span> | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+
+<span class="c-comment"># 2. Cài đặt và khởi động UFW</span>
+sudo apt install -y ufw
+sudo ufw --force enable
+
+<span class="c-comment"># 3. Cho phép SSH từ LAN (TRƯỚC khi bật firewall!)</span>
+sudo ufw allow from 10.0.0.0/24 to any port 22
+
+<span class="c-comment"># 4. Cho phép forward từ LAN ra WAN (NAT)</span>
+sudo ufw default allow routed in
+sudo ufw default allow routed out
+
+<span class="c-comment"># 5. Cấu hình NAT trong UFW (thêm vào /etc/ufw/before.rules)</span>
+<span class="c-str">sudo sed -i '/^# Don'\''t delete these required lines/a \*nat\n:POSTROUTING ACCEPT [0:0]\n-A POSTROUTING -s 10.0.0.0\/24 -o ens33 -j MASQUERADE\nCOMMIT' /etc/ufw/before.rules</span>
+
+<span class="c-comment"># 6. Reload UFW để áp dụng NAT</span>
+sudo ufw reload</pre></div>
+      <div class="alert alert-tip"><span class="alert-icon">✅</span>Kiểm tra: <code>sudo ufw status numbered</code> | <code>cat /etc/ufw/before.rules | grep -A 3 "\*nat"</code></div>
+      <div class="alert alert-warn"><span class="alert-icon">⚡</span><strong>Lưu ý:</strong> Nếu lần sau muốn xóa toàn bộ rules, dùng <code>sudo ufw reset</code></div>
+    </div>
+  </div>
+
+  <div class="lab-card" id="lab2">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num linux">L2</div><div style="flex:1"><div class="lab-title">Lab 2 – DHCP Server (isc-dhcp-server)</div><div class="lab-ip">10.0.0.1 | Cấp: 10.0.0.100-200</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>sudo apt install -y isc-dhcp-server
+
+<span class="c-comment"># Ghi config một lần bằng tee:</span>
+sudo tee /etc/dhcp/dhcpd.conf &lt;&lt; 'EOF'
+default-lease-time 600;
+max-lease-time 7200;
+subnet 10.0.0.0 netmask 255.255.255.0 {
+  range 10.0.0.100 10.0.0.200;
+  option routers 10.0.0.1;
+  option domain-name-servers 10.0.0.5, 8.8.8.8;
+  option broadcast-address 10.0.0.255;
+}
+EOF
+
+echo 'INTERFACESv4="ens33"' | sudo tee /etc/default/isc-dhcp-server
+sudo systemctl restart isc-dhcp-server
+sudo systemctl enable isc-dhcp-server</pre></div>
+      <div class="alert alert-tip"><span class="alert-icon">✅</span>Kiểm tra IP đã cấp: <code>sudo cat /var/lib/dhcp/dhcpd.leases</code></div>
+    </div>
+  </div>
+
+  <div class="lab-card" id="lab3">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num linux">L3</div><div style="flex:1"><div class="lab-title">Lab 3 – Web Server (Apache2)</div><div class="lab-ip">10.0.0.2 | Port 80, 443</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>sudo apt install -y apache2
+sudo systemctl enable --now apache2
+
+echo "<span class="c-str">&lt;h1&gt;Hello from Debian Web Server&lt;/h1&gt;</span>" | sudo tee /var/www/html/index.html
+
+<span class="c-comment"># Mở firewall (nếu đã cấu hình UFW ở Lab 1):</span>
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp</pre></div>
+      <div class="alert alert-tip"><span class="alert-icon">✅</span>Test từ server: <code>curl http://localhost</code></div>
+    </div>
+  </div>
+
+  <div class="lab-card" id="lab4">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num linux">L4</div><div style="flex:1"><div class="lab-title">Lab 4 – FTP Server (vsftpd)</div><div class="lab-ip">10.0.0.3 | Port 21 | Passive: 40000-50000</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="alert alert-warn"><span class="alert-icon">⚡</span>Phải có <code>allow_writeable_chroot=YES</code> khi dùng <code>chroot_local_user=YES</code> – thiếu → lỗi 500!</div>
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>sudo apt install -y vsftpd
+
+sudo tee /etc/vsftpd.conf &lt;&lt; 'EOF'
+listen=YES
+anonymous_enable=NO
+local_enable=YES
+write_enable=YES
+chroot_local_user=YES
+allow_writeable_chroot=YES
+pasv_enable=YES
+pasv_min_port=40000
+pasv_max_port=50000
+EOF
+
+sudo adduser ftpuser
+sudo mkdir -p /home/ftpuser/upload
+sudo chown ftpuser:ftpuser /home/ftpuser/upload
+sudo systemctl restart vsftpd && sudo systemctl enable vsftpd</pre></div>
+    </div>
+  </div>
+
+  <div class="lab-card" id="lab5">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num linux">L5</div><div style="flex:1"><div class="lab-title">Lab 5 – Mail Server (Postfix + Dovecot)</div><div class="lab-ip">10.0.0.4 | SMTP:25 | IMAP:143 | POP3:110</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>sudo apt install -y postfix dovecot-imapd dovecot-pop3d
+<span class="c-comment"># Chọn: Internet Site | System mail name: lab.local</span>
+
+<span class="c-comment"># postconf -e nhanh hơn nano, không lo typo:</span>
+sudo postconf -e 'myhostname = mail.lab.local'
+sudo postconf -e 'mydomain = lab.local'
+sudo postconf -e 'myorigin = $mydomain'
+sudo postconf -e 'inet_interfaces = all'
+sudo postconf -e 'mydestination = $myhostname, $mydomain, localhost'
+sudo postconf -e 'home_mailbox = Maildir/'
+
+sudo sed -i 's/#mail_location =/mail_location = maildir:~\/Maildir/' /etc/dovecot/conf.d/10-mail.conf
+sudo sed -i 's/disable_plaintext_auth = yes/disable_plaintext_auth = no/' /etc/dovecot/conf.d/10-auth.conf
+
+sudo adduser user1 && sudo adduser user2
+sudo maildirmake.dovecot /home/user1/Maildir && sudo chown -R user1:user1 /home/user1/Maildir
+sudo maildirmake.dovecot /home/user2/Maildir && sudo chown -R user2:user2 /home/user2/Maildir
+sudo systemctl restart postfix dovecot</pre></div>
+      <div class="alert alert-tip"><span class="alert-icon">✅</span>Test SMTP: <code>telnet 10.0.0.4 25</code> → <code>EHLO lab.local</code></div>
+    </div>
+  </div>
+
+  <div class="lab-card" id="lab6">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num linux">L6</div><div style="flex:1"><div class="lab-title">Lab 6 – DNS Server (Bind9)</div><div class="lab-ip">10.0.0.5 | Port 53 UDP+TCP | lab.local</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>sudo apt install -y bind9 bind9utils dnsutils
+
+sudo tee /etc/bind/named.conf.options &lt;&lt; 'EOF'
+acl trusted { 10.0.0.0/24; localhost; };
+options {
+  directory "/var/cache/bind";
+  recursion yes;
+  allow-query { trusted; };
+  forwarders { 8.8.8.8; };
+  dnssec-validation auto;
+};
+EOF
+
+sudo tee /etc/bind/named.conf.local &lt;&lt; 'EOF'
+zone "lab.local" { type master; file "/etc/bind/db.lab.local"; };
+zone "0.0.10.in-addr.arpa" { type master; file "/etc/bind/db.10.0.0"; };
+EOF
+
+<span class="c-comment"># Tạo zone files từ template rồi chỉnh sửa:</span>
+sudo cp /etc/bind/db.local /etc/bind/db.lab.local
+sudo cp /etc/bind/db.127 /etc/bind/db.10.0.0
+
+<span class="c-comment"># Kiểm tra cú pháp TRƯỚC KHI restart (quan trọng!):</span>
+sudo named-checkconf
+sudo named-checkzone lab.local /etc/bind/db.lab.local
+sudo systemctl restart bind9 && sudo systemctl enable bind9</pre></div>
+      <div class="alert alert-tip"><span class="alert-icon">✅</span>Test: <code>dig @10.0.0.5 ns.lab.local</code> | <code>nslookup web.lab.local 10.0.0.5</code></div>
+    </div>
+  </div>
+
+  <div class="lab-card" id="lab7">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num linux">L7</div><div style="flex:1"><div class="lab-title">Lab 7 – LDAP Server (OpenLDAP)</div><div class="lab-ip">10.0.0.6 | Port 389 | dc=lab,dc=local</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>sudo apt install -y slapd ldap-utils
+<span class="c-comment"># Nhớ password admin khi cài!</span>
+
+<span class="c-comment"># Cấu hình lại nếu cần:</span>
+sudo dpkg-reconfigure slapd
+<span class="c-comment"># DNS domain: lab.local | Organization: Lab</span>
+
+cat > /tmp/base.ldif &lt;&lt; 'EOF'
+dn: ou=people,dc=lab,dc=local
+objectClass: organizationalUnit
+ou: people
+
+dn: ou=groups,dc=lab,dc=local
+objectClass: organizationalUnit
+ou: groups
+EOF
+ldapadd -x -D 'cn=admin,dc=lab,dc=local' -w &lt;password&gt; -f /tmp/base.ldif
+
+<span class="c-comment"># Tạo hash password cho user:</span>
+slappasswd   <span class="c-comment"># copy chuỗi {SSHA}... vào file ldif</span>
+
+<span class="c-comment"># Kiểm tra:</span>
+ldapsearch -x -H ldap://localhost -b 'dc=lab,dc=local'</pre></div>
+    </div>
+  </div>
+
+  <div class="lab-card" id="lab8">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num linux">L8</div><div style="flex:1"><div class="lab-title">Lab 8 – Samba Server</div><div class="lab-ip">10.0.0.7 | Port 445 | /srv/samba/share</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>sudo apt install -y samba samba-common-bin
+sudo mkdir -p /srv/samba/share && sudo chmod 0770 /srv/samba/share
+
+sudo groupadd smbgroup
+sudo useradd -m -G smbgroup smbuser
+sudo smbpasswd -a smbuser
+sudo chown -R root:smbgroup /srv/samba/share
+
+sudo tee -a /etc/samba/smb.conf &lt;&lt; 'EOF'
+[share]
+   path = /srv/samba/share
+   valid users = @smbgroup
+   writable = yes
+   browsable = yes
+EOF
+
+testparm -s   <span class="c-comment"># kiểm tra config</span>
+sudo systemctl restart smbd nmbd && sudo systemctl enable smbd nmbd</pre></div>
+      <div class="alert alert-tip"><span class="alert-icon">✅</span>Từ Windows: truy cập <code>\\10.0.0.7\share</code></div>
+    </div>
+  </div>
+
+  <div class="lab-card" id="lab9">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num linux">L9</div><div style="flex:1"><div class="lab-title">Lab 9 – SSH Server</div><div class="lab-ip">10.0.0.8 | Port 22</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>sudo apt install -y openssh-server
+sudo systemctl enable --now ssh
+
+sudo sed -i 's/#PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+sudo sed -i 's/#PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+sudo systemctl restart ssh
+
+<span class="c-comment"># SSH Key auth (từ client):</span>
+ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa
+ssh-copy-id <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1a6f697f685a2b2a342a342a3422">[email&#160;protected]</a></pre></div>
+    </div>
+  </div>
+
+  <div class="lab-card" id="lab10">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num linux">L10</div><div style="flex:1"><div class="lab-title">Lab 10 – VPN Server (OpenVPN)</div><div class="lab-ip">WAN: 192.168.1.10 | VPN: 10.8.0.0/24</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="alert alert-warn"><span class="alert-icon">⚡</span>Bước <code>gen-dh</code> mất 2-5 phút. Bắt đầu chạy xong làm việc khác trong lúc chờ!</div>
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>sudo apt install -y openvpn easy-rsa
+sudo cp -r /usr/share/easy-rsa /etc/openvpn/easy-rsa
+cd /etc/openvpn/easy-rsa
+sudo ./easyrsa init-pki
+sudo ./easyrsa build-ca nopass        <span class="c-comment"># CN: OpenVPN-CA</span>
+sudo ./easyrsa build-server-full server nopass
+sudo ./easyrsa build-client-full client1 nopass
+sudo ./easyrsa gen-dh                 <span class="c-comment"># ⏱ Chờ 2-5 phút...</span>
+sudo openvpn --genkey --secret ta.key
+
+sudo cp pki/ca.crt pki/issued/server.crt pki/private/server.key pki/dh.pem ta.key /etc/openvpn/
+sudo systemctl start openvpn@server && sudo systemctl enable openvpn@server</pre></div>
+    </div>
+  </div>
+
+  <!-- WINDOWS -->
+  <div class="part-header windows"><span class="part-icon">🪟</span><div><div class="part-title">PHẦN II – DỊCH VỤ WINDOWS (Server 2022)</div><div class="part-sub">Lab 11–20 | Dùng PowerShell – nhanh hơn GUI 5-10 phút mỗi lab</div></div></div>
+
+  <div class="lab-card open" id="lab11">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num windows">W1</div><div style="flex:1"><div class="lab-title">Lab 11 – Active Directory Domain Services</div><div class="lab-ip">10.0.0.10 | Domain: lab.local | DNS self: 127.0.0.1</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="alert alert-warn"><span class="alert-icon">⚡</span>Trước khi promote: đặt DNS = <code>127.0.0.1</code> trên DC. Nếu quên → promote thất bại!</div>
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">PowerShell – Run as Admin</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>Install-WindowsFeature AD-Domain-Services, DNS -IncludeManagementTools
+
+Install-ADDSForest `
+  -DomainName 'lab.local' `
+  -DomainNetbiosName 'LAB' `
+  -SafeModeAdministratorPassword (ConvertTo-SecureString 'Password123!' -AsPlainText -Force) `
+  -InstallDns `
+  -Force
+<span class="c-comment"># Server tự reboot sau khi xong</span></pre></div>
+      <h3 class="blue">Sau khi reboot – Tạo User/Group</h3>
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">PowerShell</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>New-ADOrganizationalUnit -Name 'Users_OU' -Path 'DC=lab,DC=local'
+
+New-ADUser -Name 'user1' -SamAccountName 'user1' `
+  -Path 'OU=Users_OU,DC=lab,DC=local' `
+  -AccountPassword (ConvertTo-SecureString 'Password123!' -AsPlainText -Force) `
+  -Enabled $true
+
+New-ADGroup -Name 'IT_Admins' -GroupScope Global -Path 'OU=Users_OU,DC=lab,DC=local'
+Add-ADGroupMember -Identity 'IT_Admins' -Members 'user1'
+
+<span class="c-comment"># Join domain từ Windows 11 client:</span>
+Add-Computer -DomainName lab.local -Restart</pre></div>
+    </div>
+  </div>
+
+  <div class="lab-card" id="lab12">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num windows">W2</div><div style="flex:1"><div class="lab-title">Lab 12 – DNS tích hợp Active Directory</div><div class="lab-ip">10.0.0.10 | Zone lab.local tự tạo sau AD DS</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">PowerShell</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>Add-DnsServerForwarder -IPAddress 8.8.8.8, 8.8.4.4
+Add-DnsServerResourceRecordA -Name 'webserver' -ZoneName 'lab.local' -IPv4Address '10.0.0.2'
+Add-DnsServerPrimaryZone -NetworkID '10.0.0.0/24' -ReplicationScope 'Domain'
+
+<span class="c-comment"># Test từ client:</span>
+nslookup webserver.lab.local
+nslookup google.com</pre></div>
+    </div>
+  </div>
+
+  <div class="lab-card" id="lab13">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num windows">W3</div><div style="flex:1"><div class="lab-title">Lab 13 – Web Server (IIS)</div><div class="lab-ip">10.0.0.11 | Port 80</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">PowerShell</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>Install-WindowsFeature Web-Server, Web-Mgmt-Console -IncludeManagementTools
+Set-Content -Path "C:\inetpub\wwwroot\index.html" -Value "<h1>IIS Web Server OK</h1>"
+
+<span class="c-comment"># Website mới trên port 8080:</span>
+New-WebSite -Name 'MyApp' -PhysicalPath 'C:\inetpub\wwwroot\MyApp' -Port 8080</pre></div>
+    </div>
+  </div>
+
+  <div class="lab-card" id="lab14">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num windows">W4</div><div style="flex:1"><div class="lab-title">Lab 14 – Group Policy (GPO)</div><div class="lab-ip">Domain: lab.local</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">PowerShell</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>New-GPO -Name 'Security_Policy' | New-GPLink -Target 'DC=lab,DC=local'
+Invoke-GPUpdate -Force
+
+<span class="c-comment"># Từ client:</span>
+gpupdate /force
+gpresult /r</pre></div>
+      <div class="sub-text mt-8">GUI nhanh: <strong>GPO Editor › User Config › Admin Templates › Control Panel › Prohibit access = Enabled</strong></div>
+    </div>
+  </div>
+
+  <div class="lab-card" id="lab15">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num windows">W5</div><div style="flex:1"><div class="lab-title">Lab 15 – Certificate Authority (AD CS)</div><div class="lab-ip">10.0.0.10 | Enterprise Root CA</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">PowerShell</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>Install-WindowsFeature ADCS-Cert-Authority, ADCS-Web-Enrollment -IncludeManagementTools
+
+Install-AdcsCertificationAuthority `
+  -CAType EnterpriseRootCa `
+  -CACommonName 'lab-CA' `
+  -Force
+
+Install-AdcsWebEnrollment -Force</pre></div>
+      <div class="alert alert-tip"><span class="alert-icon">✅</span>Client domain tự tin cậy CA. Kiểm tra: <code>mmc › Certificates › Trusted Root CA</code></div>
+    </div>
+  </div>
+
+  <div class="lab-card" id="lab16">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num windows">W6</div><div style="flex:1"><div class="lab-title">Lab 16 – Remote Desktop (RDS)</div><div class="lab-ip">10.0.0.12 | RDP Port: 3389</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="alert alert-info"><span class="alert-icon">ℹ️</span>Cách nhanh: bật RDP qua Registry, không cần cài full RDS role (tiết kiệm 10+ phút)</div>
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">PowerShell</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' `
+  -Name 'fDenyTSConnections' -Value 0
+Enable-NetFirewallRule -DisplayGroup 'Remote Desktop'
+Add-LocalGroupMember -Group 'Remote Desktop Users' -Member 'lab\user1'</pre></div>
+    </div>
+  </div>
+
+  <div class="lab-card" id="lab17">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num windows">W7</div><div style="flex:1"><div class="lab-title">Lab 17 – DHCP Server (Windows)</div><div class="lab-ip">10.0.0.13 | Scope: 100-200</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">PowerShell</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>Install-WindowsFeature DHCP -IncludeManagementTools
+Add-DhcpServerInDC -DnsName 'dc.lab.local' -IPAddress 10.0.0.13
+
+Add-DhcpServerv4Scope -Name 'LAN_Scope' `
+  -StartRange 10.0.0.100 -EndRange 10.0.0.200 `
+  -SubnetMask 255.255.255.0 -State Active
+
+Set-DhcpServerv4OptionValue -ScopeId 10.0.0.0 `
+  -Router 10.0.0.1 -DnsServer 10.0.0.10 -DnsDomain 'lab.local'
+
+Add-DhcpServerv4ExclusionRange -ScopeId 10.0.0.0 -StartRange 10.0.0.13 -EndRange 10.0.0.13</pre></div>
+    </div>
+  </div>
+
+  <div class="lab-card" id="lab18">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num windows">W8</div><div style="flex:1"><div class="lab-title">Lab 18 – File Services &amp; Shared Folder</div><div class="lab-ip">10.0.0.14 | SMB: 445 | C:\Shares\</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">PowerShell</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>Install-WindowsFeature FS-FileServer -IncludeManagementTools
+
+New-Item -ItemType Directory -Path 'C:\Shares\Public'
+New-SmbShare -Name 'Public' -Path 'C:\Shares\Public' -FullAccess 'lab\Domain Users'
+icacls 'C:\Shares\Public' /grant 'lab\Domain Users:(OI)(CI)M'
+
+New-Item -ItemType Directory -Path 'C:\Shares\Private'
+New-SmbShare -Name 'Private' -Path 'C:\Shares\Private' `
+  -FullAccess 'lab\IT_Admins' -NoAccess 'Everyone'
+icacls 'C:\Shares\Private' /grant 'lab\IT_Admins:(OI)(CI)F'</pre></div>
+      <div class="alert alert-tip"><span class="alert-icon">✅</span>Từ client: <code>net use Z: \\10.0.0.14\Public /user:lab\user1 Password123!</code></div>
+    </div>
+  </div>
+
+  <div class="lab-card" id="lab19">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num windows">W9</div><div style="flex:1"><div class="lab-title">Lab 19 – Routing and Remote Access (RRAS)</div><div class="lab-ip">WAN: 192.168.1.10 | LAN: 10.0.0.1</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">PowerShell</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>Install-WindowsFeature RemoteAccess, Routing, RSAT-RemoteAccess -IncludeManagementTools
+Install-RemoteAccess -VpnType RoutingOnly
+
+netsh routing ip nat install
+netsh routing ip nat add interface "Ethernet0" full     <span class="c-comment"># WAN</span>
+netsh routing ip nat add interface "Ethernet1" private  <span class="c-comment"># LAN</span></pre></div>
+    </div>
+  </div>
+
+  <div class="lab-card" id="lab20">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num windows">W10</div><div style="flex:1"><div class="lab-title">Lab 20 – App Service (IIS Web App)</div><div class="lab-ip">10.0.0.11 | Port 8080</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="code-wrap"><div class="code-header"><span class="code-lang">PowerShell</span><button class="copy-btn" onclick="cp(this)">Copy</button></div><pre>Import-Module WebAdministration
+New-WebAppPool -Name 'MyAppPool'
+Set-ItemProperty 'IIS:\AppPools\MyAppPool' managedRuntimeVersion ''
+
+New-Item -ItemType Directory -Path 'C:\inetpub\wwwroot\MyWebApp'
+Set-Content "C:\inetpub\wwwroot\MyWebApp\index.html" -Value "<h1>My App</h1>"
+New-WebSite -Name 'MyWebApp' `
+  -PhysicalPath 'C:\inetpub\wwwroot\MyWebApp' `
+  -ApplicationPool 'MyAppPool' -Port 8080
+
+New-NetFirewallRule -DisplayName 'MyWebApp 8080' `
+  -Direction Inbound -Protocol TCP -LocalPort 8080 -Action Allow</pre></div>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="part-header summary"><span class="part-icon">📊</span><div><div class="part-title">PHẦN III – BẢNG TÓM TẮT NHANH</div><div class="part-sub">Địa chỉ IP, lệnh kiểm tra, checklist và lỗi thường gặp</div></div></div>
+
+  <div class="lab-card open" id="ipmap">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num linux">🗺️</div><div style="flex:1"><div class="lab-title">Bản đồ địa chỉ IP</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Service</th><th>IP</th><th>Port chính</th><th>Ghi chú</th></tr></thead>
+        <tbody>
+          <tr><td>🐧 Router / Firewall</td><td><code>10.0.0.1</code></td><td>–</td><td>ens34 LAN | ens33 WAN</td></tr>
+          <tr><td>🐧 DHCP Linux</td><td><code>10.0.0.1</code></td><td>67/68 UDP</td><td>Cùng máy Router OK</td></tr>
+          <tr><td>🐧 Web Apache</td><td><code>10.0.0.2</code></td><td>80, 443</td><td>/var/www/html</td></tr>
+          <tr><td>🐧 FTP vsftpd</td><td><code>10.0.0.3</code></td><td>21 | 40000-50000</td><td>Passive mode</td></tr>
+          <tr><td>🐧 Mail Postfix/Dovecot</td><td><code>10.0.0.4</code></td><td>25/110/143</td><td>Domain: lab.local</td></tr>
+          <tr><td>🐧 DNS Bind9</td><td><code>10.0.0.5</code></td><td>53 UDP+TCP</td><td>Zone: lab.local</td></tr>
+          <tr><td>🐧 LDAP slapd</td><td><code>10.0.0.6</code></td><td>389, 636</td><td>dc=lab,dc=local</td></tr>
+          <tr><td>🐧 Samba</td><td><code>10.0.0.7</code></td><td>445, 139</td><td>\\10.0.0.7\share</td></tr>
+          <tr><td>🐧 SSH</td><td><code>10.0.0.8</code></td><td>22</td><td>OpenSSH Server</td></tr>
+          <tr><td>🐧 VPN OpenVPN</td><td><code>192.168.1.10</code></td><td>1194 UDP</td><td>VPN pool: 10.8.0.0/24</td></tr>
+          <tr><td>🪟 AD DS + DNS</td><td><code>10.0.0.10</code></td><td>–</td><td>DNS self: 127.0.0.1</td></tr>
+          <tr><td>🪟 IIS Web</td><td><code>10.0.0.11</code></td><td>80, 8080</td><td>C:\inetpub\wwwroot</td></tr>
+          <tr><td>🪟 RDS</td><td><code>10.0.0.12</code></td><td>3389</td><td>Remote Desktop</td></tr>
+          <tr><td>🪟 DHCP Windows</td><td><code>10.0.0.13</code></td><td>67/68</td><td>Scope: 100-200</td></tr>
+          <tr><td>🪟 File Server</td><td><code>10.0.0.14</code></td><td>445</td><td>C:\Shares\</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="lab-card open" id="cmds">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num linux">🔍</div><div style="flex:1"><div class="lab-title">Lệnh kiểm tra phổ biến</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Kiểm tra</th><th>Linux (bash)</th><th>Windows (PS/CMD)</th></tr></thead>
+        <tbody>
+          <tr><td>Service status</td><td><code>systemctl status &lt;svc&gt;</code></td><td><code>Get-Service &lt;svc&gt;</code></td></tr>
+          <tr><td>IP Address</td><td><code>ip a</code></td><td><code>ipconfig /all</code></td></tr>
+          <tr><td>Kết nối TCP</td><td><code>ss -tuln</code></td><td><code>netstat -an</code></td></tr>
+          <tr><td>DNS lookup</td><td><code>dig @ip domain</code></td><td><code>nslookup domain ip</code></td></tr>
+          <tr><td>Log service</td><td><code>journalctl -u &lt;svc&gt; -n 30</code></td><td>Event Viewer</td></tr>
+          <tr><td>Firewall rules</td><td><code>sudo ufw status numbered</code></td><td><code>Get-NetFirewallRule</code></td></tr>
+          <tr><td>DHCP leases</td><td><code>cat /var/lib/dhcp/dhcpd.leases</code></td><td>DHCP Console › Leases</td></tr>
+          <tr><td>Samba test</td><td><code>testparm -s</code></td><td><code>Get-SmbShare</code></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="lab-card open" id="chklist">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num linux">☑️</div><div style="flex:1"><div class="lab-title">Checklist trước khi nộp bài</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <ul class="checklist">
+        <li>Ping giữa server và client thành công (2 chiều)</li>
+        <li>Service đang chạy: <code>systemctl status</code> hoặc <code>Get-Service</code> hiện <strong>active/running</strong></li>
+        <li>Service tự khởi động: <code>systemctl enable</code> đã chạy</li>
+        <li>Firewall đã mở đúng port cho từng service</li>
+        <li>Test chức năng từ <strong>client</strong> (không chỉ từ server)</li>
+        <li>Log không có lỗi đỏ: <code>journalctl -u &lt;service&gt; | tail -20</code></li>
+        <li>Với DNS: <code>named-checkconf</code> và <code>named-checkzone</code> không báo lỗi</li>
+        <li>Với AD DS: client join domain và login domain account thành công</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="lab-card open" id="errors">
+    <div class="lab-header" onclick="tog(this)"><div class="lab-num linux">🐛</div><div style="flex:1"><div class="lab-title">Lỗi thường gặp &amp; Cách xử lý nhanh</div></div><span class="lab-chevron">▶</span></div>
+    <div class="lab-body">
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Lỗi</th><th>Nguyên nhân</th><th>Xử lý nhanh</th></tr></thead>
+        <tbody>
+          <tr><td>apt install thất bại</td><td>Không có internet/repo</td><td>Dùng ISO làm local repo (Phần 0)</td></tr>
+          <tr><td>Service failed to start</td><td>Lỗi cấu hình</td><td><code>journalctl -xe</code> xem chi tiết</td></tr>
+          <tr><td>Client không ping server</td><td>Firewall hoặc IP sai</td><td><code>sudo ufw disable</code> tắt tạm để test (nhớ bật lại: <code>sudo ufw enable</code>)</td></tr>
+          <tr><td>DHCP không cấp IP</td><td>Interface sai</td><td>Kiểm tra <code>/etc/default/isc-dhcp-server</code></td></tr>
+          <tr><td>DNS không phân giải</td><td>Zone file lỗi cú pháp</td><td><code>named-checkconf &amp;&amp; named-checkzone</code></td></tr>
+          <tr><td>Samba từ chối kết nối</td><td>Chưa có smbpasswd</td><td><code>sudo smbpasswd -a username</code></td></tr>
+          <tr><td>FTP lỗi 500</td><td>Thiếu allow_writeable_chroot</td><td>Thêm <code>allow_writeable_chroot=YES</code></td></tr>
+          <tr><td>AD DS promote thất bại</td><td>DNS chưa trỏ 127.0.0.1</td><td>Set DNS = <code>127.0.0.1</code> trên DC</td></tr>
+          <tr><td>VPN gen-dh chậm</td><td>DH 2048bit</td><td>Chạy nền, làm việc khác trong lúc chờ</td></tr>
+          <tr><td>SSH từ chối password</td><td>PasswordAuthentication no</td><td>Sửa <code>/etc/ssh/sshd_config</code></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+</main>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+function tog(header){const c=header.closest('.lab-card');c.classList.toggle('open')}
+function goTo(id){const el=document.getElementById(id);if(el){el.scrollIntoView({behavior:'smooth',block:'start'})}}
+function cp(btn){const pre=btn.closest('.code-wrap').querySelector('pre');const t=pre.innerText||pre.textContent;navigator.clipboard.writeText(t).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied')},2000)})}
+function filterNav(v){const q=v.toLowerCase();document.querySelectorAll('.nav-link').forEach(l=>{l.style.display=l.textContent.toLowerCase().includes(q)?'flex':'non
